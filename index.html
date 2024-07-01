@@ -25,14 +25,12 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         .header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
         }
         .logo {
-            width: 100px;
-            height: auto;
-            margin-right: 20px;
+    margin-right: 20px;
         }
         h2 {
             color: #2c3e50;
@@ -40,6 +38,8 @@
             font-size: 2.5em;
             text-transform: uppercase;
             letter-spacing: 2px;
+              flex-grow: 1; /* 占据剩余空间 */
+    text-align: center; /* 居中对齐 */
         }
         .input-output-wrapper {
             display: flex;
@@ -79,7 +79,7 @@
             outline: none;
             border-color: #3498db;
         }
-        button {
+        button {#calculatebutton
             display: block;
             width: 100%;
             padding: 15px;
@@ -93,6 +93,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: background-color 0.3s, transform 0.1s;
+           margin-bottom: 40px;
         }
         button:hover {
             background-color: #2980b9;
@@ -268,12 +269,12 @@
     };
 
     return (
-              <div className="container">
-       <div className="header">
-      <img src="images/KakaoTalk_20240701_172733808.png" alt="LBT Logo" className="logo" />
-            <h2>Nanoparticle Simulator</h2>
-                         </div>
-            <div className="file-upload">
+  <div className="container">
+            <div className="header">
+                <img src="images/KakaoTalk_20240701_172733808.png" alt="LBT Logo" className="logo" />
+                <h2>Nanoparticle Simulator</h2>
+            </div>
+          <div className="file-upload">
                 <input type="file" id="csv-file" accept=".csv" onChange={handleFileUpload} />
                 <label htmlFor="csv-file">Upload CSV (Optional)</label>
                 <span className="file-name">{fileName}</span>
@@ -319,11 +320,11 @@
             <div className="button-section">
                 <button onClick={calculateOutputs}>Calculate</button>
             </div>
-       <div className="footer">
-        <p>Yonsei University 50, Yonsei-ro, Seodaemun-gu, Seoul, Korea</p>
-                       <p>Postal code: xxx-xxx, Contact: 82-2-xxxx-xxxx</p>
-                       <p>Copyright 2024 LBT. All rights reserved. Design by xxx</p>
-                   </div>
+            <div className="footer">
+                <p>Yonsei University 50, Yonsei-ro, Seodaemun-gu, Seoul, Korea</p>
+                <p>Postal code: xxx-xxx, Contact: 82-2-xxxx-xxxx</p>
+                <p>Copyright 2024 LBT. All rights reserved. Design by xxx</p>
+            </div>
                </div>
            );
        };
