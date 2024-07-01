@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nanoparticle Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .input-output-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .input-section, .output-section {
+            width: 48%;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #3498db;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input, select {
+            width: 80%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .reference {
+            font-style: italic;
+            color: #7f8c8d;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .recommended-range {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .file-upload {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .file-upload input {
+            display: none;
+        }
+        .file-upload label {
+            padding: 12px 24px;
+            background-color: #2ecc71;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        .file-upload label:hover {
+            background-color: #27ae60;
+        }
+        .file-name {
+            margin-left: 15px;
+            font-size: 16px;
+            color: #34495e;
+        }
+        .output-section {
+            text-align: left;
+        }
+        .output-section p {
+            margin: 15px 0;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        .output-value {
+            font-weight: bold;
+            color: #3498db;
+        }
+        .rna-dropdown {
+            margin-top: 30px;
+        }
+              .footer {#下划线
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #bdc3c7;
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+       const NanoparticleSimulator = () => {
+    const lipids = [
+        { name: 'EPC', min: 0, max: 75 },
+        { name: 'DPPC', min: 0, max: 75 },
+        { name: 'DSPE', min: 0, max: 60 },
+        { name: 'Cholesterol', min: 0, max: 60 }
+    ];
+
+    const RNAOptions = [
+        'miR26a', 'miR27a', 'HMBG1 target siRNA', 
+        'TNFRSF19L siRNA', 'anti-podoplanin siRNA'
+    ];
+
+    const [inputs, setInputs] = React.useState(lipids.map(() => ''));
+    const [selectedRNA, setSelectedRNA] = React.useState('');
+    const [outputs, setOutputs] = React.useState({
+        particleSize: '0',
+        zetaPotential: '0',
+        pdi: '0'
+    });
+    const [reference, setReference] = React.useState('');
+    const [errors, setErrors] = React.useState(lipids.map(() => ''));
+    const [data, setData] = React.useState([]);
+    const [fileName, setFileName] = React.useState('');
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        setFileName(file.name);
+        Papa.parse(file, {
+            complete: (results) => {
+                setData(results.data);
+                console.log("Parsed data:", results.data);
+            },
+            header: true
+        });
+    };
+
+    const handleInputChange = (index, value) => {
+        const newInputs = [...inputs];
+        newInputs[index] = value;
+        setInputs(newInputs);
+
+        // Validate input
+        const newErrors = [...errors];
+        const lipid = lipids[index];
+        if (value !== '' && (Number(value) < lipid.min || Number(value) > lipid.max)) {
+            newErrors[index] = `Value should be between ${lipid.min} and ${lipid.max}`;
+        } else {
+            newErrors[index] = '';
+        }
+        setErrors(newErrors);
+    };
+
+    const calculateOutputs = () => {
+        const numInputs = inputs.map(Number);
+        const sum = numInputs.reduce((a, b) => a + b, 0);
+        if (sum !== 100) {
+            alert('The sum of all components must equal 100');
+            return;
+        }
+
+        let matchingRow;
+        if (data.length > 0) {
+            matchingRow = data.find(row =>
+                row.EPC == numInputs[0] &&
+                row.DPPC == numInputs[1] &&
+                row.DSPE == numInputs[2] &&
+                row.Cholesterol == numInputs[3]
+            );
+        }
+
+        if (matchingRow) {
+            setOutputs({
+                particleSize: matchingRow['Particle Size'] || '0 (data not shown)',
+                zetaPotential: matchingRow['Zeta Potential'] || '0 (data not shown)',
+                pdi: matchingRow['PDI'] || '0 (data not shown)'
+            });
+            setReference(matchingRow['Ref'] ? `Paper #${matchingRow['Ref']}` : 'Reference not available');
+        } else {
+            // Random prediction
+            const particleSize = Math.random() * (150 - 50) + 50;
+            const zetaPotential = Math.random() * 60 - 30;
+            const pdi = Math.random() * (0.3 - 0.05) + 0.05;
+
+            setOutputs({
+                particleSize: `${particleSize.toFixed(2)}nm (Predicted)`,
+                zetaPotential: `${zetaPotential.toFixed(2)}mV (Predicted)`,
+                pdi: pdi.toFixed(4) + ' (Predicted)'
+            });
+            setReference('Prediction - No matching data');
+        }
+    };
+
+    const handleRNAChange = (event) => {
+        setSelectedRNA(event.target.value);
+    };
+
+    return (
+              <div className="container">
+       <div className="header">
+      <img src="C:\Users\jianghairi\Desktop\interface\KakaoTalk_20240701_172733808.png" alt="LBT Logo" className="logo" />
+            <h2>Nanoparticle Simulator</h2>
+                         </div>
+            <div className="file-upload">
+                <input type="file" id="csv-file" accept=".csv" onChange={handleFileUpload} />
+                <label htmlFor="csv-file">Upload CSV (Optional)</label>
+                <span className="file-name">{fileName}</span>
+            </div>
+            <div className="input-output-wrapper">
+                <div className="input-section">
+                    <h3>Input Components</h3>
+                    {lipids.map((lipid, index) => (
+                        <div key={index} className="input-group">
+                            <label>{lipid.name}:</label>
+                            <input
+                                type="number"
+                                value={inputs[index]}
+                                onChange={(e) => handleInputChange(index, e.target.value)}
+                                min={lipid.min}
+                                max={lipid.max}
+                                step="0.1"
+                            />
+                            <div className="recommended-range">
+                                Recommended range: {lipid.min}% - {lipid.max}%
+                            </div>
+                            {errors[index] && <div className="error">{errors[index]}</div>}
+                        </div>
+                    ))}
+                    <div className="rna-dropdown">
+                        <label>RNA Option:</label>
+                        <select value={selectedRNA} onChange={handleRNAChange}>
+                            <option value="">Select RNA</option>
+                            {RNAOptions.map((rna, index) => (
+                                <option key={index} value={rna}>{rna}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+                <div className="output-section">
+                    <h3>Output Features</h3>
+                    <p>Particle Size: <span className="output-value">{outputs.particleSize}</span></p>
+                    <p>Zeta Potential: <span className="output-value">{outputs.zetaPotential}</span></p>
+                    <p>PDI: <span className="output-value">{outputs.pdi}</span></p>
+                    {reference && <p className="reference">Reference: {reference}</p>}
+                </div>
+            </div>
+            <div className="button-section">
+                <button onClick={calculateOutputs}>Calculate</button>
+            </div>
+       <div className="footer">
+        <p>Yonsei University 50, Yonsei-ro, Seodaemun-gu, Seoul, Korea</p>
+                       <p>Postal code: xxx-xxx, Contact: 82-2-xxxx-xxxx</p>
+                       <p>Copyright 2024 LBT. All rights reserved. Design by xxx</p>
+                   </div>
+               </div>
+           );
+       };
+        ReactDOM.render(<NanoparticleSimulator />, document.getElementById('root'));
+    </script>
+</body>
+</html>
