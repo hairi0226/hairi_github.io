@@ -199,7 +199,7 @@
     const [fileName, setFileName] = React.useState('');
              // Load default CSV file on component mount
     React.useEffect(() => {
-        fetch('/data/test_base.csv')
+        fetch('https://github.com/hairi0226/hairi_github.io/data/test_base.csv')
             .then(response => response.text())
             .then(csvText => {
                 Papa.parse(csvText, {
