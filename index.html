@@ -197,7 +197,20 @@
     const [errors, setErrors] = React.useState(lipids.map(() => ''));
     const [data, setData] = React.useState([]);
     const [fileName, setFileName] = React.useState('');
-
+             // Load default CSV file on component mount
+    React.useEffect(() => {
+        fetch('/data/test_base.csv')
+            .then(response => response.text())
+            .then(csvText => {
+                Papa.parse(csvText, {
+                    complete: (results) => {
+                        setData(results.data);
+                        console.log("Default data:", results.data);
+                    },
+                    header: true
+                });
+            });
+    }, []);
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         setFileName(file.name);
