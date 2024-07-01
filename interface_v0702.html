@@ -198,19 +198,25 @@
     const [data, setData] = React.useState([]);
     const [fileName, setFileName] = React.useState('');
              // Load default CSV file on component mount
-    React.useEffect(() => {
-        fetch('/data/test_base.csv')
-            .then(response => response.text())
-            .then(csvText => {
-                Papa.parse(csvText, {
-                    complete: (results) => {
-                        setData(results.data);
-                        console.log("Default data:", results.data);
-                    },
-                    header: true
-                });
+  React.useEffect(() => {
+    fetch('https://hairi0226.github.io/hairi_github.io/data/test_base.csv')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(csvText => {
+            Papa.parse(csvText, {
+                complete: (results) => {
+                    setData(results.data);
+                    console.log("Default data:", results.data);
+                },
+                header: true
             });
-    }, []);
+        })
+        .catch(e => console.error('Error loading CSV:', e));
+}, []);
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         setFileName(file.name);
@@ -240,6 +246,9 @@
     };
 
     const calculateOutputs = () => {
+            console.log("Calculating outputs...");
+    console.log("Inputs:", inputs);
+    console.log("Data:", data);
         const numInputs = inputs.map(Number);
         const sum = numInputs.reduce((a, b) => a + b, 0);
         if (sum !== 100) {
