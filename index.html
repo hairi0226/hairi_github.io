@@ -287,7 +287,11 @@
             setReference('Prediction - No matching data');
         }
     };
-
+        // Randomly select an image
+        const randomImage = `NLP${Math.floor(Math.random() * 4) + 1}.png`;
+        setSelectedImage(`https://hairi0226.github.io/hairi_github.io/NLP/${randomImage}`);
+    };
+      
     const handleRNAChange = (event) => {
         setSelectedRNA(event.target.value);
     };
@@ -340,6 +344,12 @@
                     <p>Zeta Potential: <span className="output-value">{outputs.zetaPotential}</span></p>
                     <p>PDI: <span className="output-value">{outputs.pdi}</span></p>
                     {reference && <p className="reference">Reference: {reference}</p>}
+                    {selectedImage && (
+                        <div className="output-image">
+                            <h3>NLP Image</h3>
+                            <img src={selectedImage} alt="NLP Visualization" style={{ maxWidth: '100%', height: 'auto' }} />
+                        </div>
+                    )}
                 </div>
       
             </div>
