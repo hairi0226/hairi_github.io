@@ -167,16 +167,6 @@
             font-size: 0.9em;
             color: #7f8c8d;
         }
-        .output-image {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.output-image img {
-    max-width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
     </style>
 </head>
 <body>
@@ -259,9 +249,6 @@
             console.log("Calculating outputs...");
     console.log("Inputs:", inputs);
     console.log("Data:", data);
-            const images = ['NLP1.png', 'NLP2.png', 'NLP3.png', 'NLP4.png'];
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-    setCurrentImage(randomImage);
         const numInputs = inputs.map(Number);
         const sum = numInputs.reduce((a, b) => a + b, 0);
         if (sum !== 100) {
@@ -306,12 +293,12 @@
     };
 
     return (
-   <div className="container">
+  <div className="container">
             <div className="header">
                 <img src="images/KakaoTalk_20240701_172733808.png" alt="LBT Logo" className="logo" />
                 <h2>Nanoparticle Simulator</h2>
             </div>
-            <div className="file-upload">
+          <div className="file-upload">
                 <input type="file" id="csv-file" accept=".csv" onChange={handleFileUpload} />
                 <label htmlFor="csv-file">Upload CSV (Optional)</label>
                 <span className="file-name">{fileName}</span>
@@ -345,6 +332,7 @@
                             ))}
                         </select>
                     </div>
+      
                 </div>
                 <div className="output-section">
                     <h3>Output Features</h3>
@@ -352,7 +340,14 @@
                     <p>Zeta Potential: <span className="output-value">{outputs.zetaPotential}</span></p>
                     <p>PDI: <span className="output-value">{outputs.pdi}</span></p>
                     {reference && <p className="reference">Reference: {reference}</p>}
+                    {selectedImage && (
+                        <div className="output-image">
+                            <h3>NLP Image</h3>
+                            <img src={selectedImage} alt="NLP Visualization" style={{ maxWidth: '100%', height: 'auto' }} />
+                        </div>
+                    )}
                 </div>
+      
             </div>
             <div className="button-section">
                 <button onClick={calculateOutputs}>Calculate</button>
@@ -362,8 +357,10 @@
                 <p>Postal code: xxx-xxx, Contact: 82-2-xxxx-xxxx</p>
                 <p>Copyright 2024 LBT. All rights reserved. Design by xxx</p>
             </div>
-        </div>
-    );
-};
-
-ReactDOM.render(<NanoparticleSimulator />, document.getElementById('root'));
+               </div>
+           );
+       };
+        ReactDOM.render(<NanoparticleSimulator />, document.getElementById('root'));
+    </script>
+</body>
+</html>
