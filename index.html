@@ -173,7 +173,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-       const NanoparticleSimulator = () => {
+const NanoparticleSimulator = () => {
     const lipids = [
         { name: 'EPC', min: 0, max: 75 },
         { name: 'DPPC', min: 0, max: 75 },
@@ -197,26 +197,32 @@
     const [errors, setErrors] = React.useState(lipids.map(() => ''));
     const [data, setData] = React.useState([]);
     const [fileName, setFileName] = React.useState('');
-             // Load default CSV file on component mount
-  React.useEffect(() => {
-    fetch('https://hairi0226.github.io/hairi_github.io/data/test_base.csv')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(csvText => {
-            Papa.parse(csvText, {
-                complete: (results) => {
-                    setData(results.data);
-                    console.log("Default data:", results.data);
-                },
-                header: true
-            });
-        })
-        .catch(e => console.error('Error loading CSV:', e));
-}, []);
+    const [showCSV, setShowCSV] = React.useState(false);
+
+    React.useEffect(() => {
+        loadDefaultCSV();
+    }, []);
+
+    const loadDefaultCSV = () => {
+        fetch('https://hairi0226.github.io/hairi_github.io/data/test_base.csv')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(csvText => {
+                Papa.parse(csvText, {
+                    complete: (results) => {
+                        setData(results.data);
+                        console.log("Default data:", results.data);
+                    },
+                    header: true
+                });
+            })
+            .catch(e => console.error('Error loading CSV:', e));
+    };
+
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         setFileName(file.name);
@@ -234,7 +240,6 @@
         newInputs[index] = value;
         setInputs(newInputs);
 
-        // Validate input
         const newErrors = [...errors];
         const lipid = lipids[index];
         if (value !== '' && (Number(value) < lipid.min || Number(value) > lipid.max)) {
@@ -246,9 +251,9 @@
     };
 
     const calculateOutputs = () => {
-            console.log("Calculating outputs...");
-    console.log("Inputs:", inputs);
-    console.log("Data:", data);
+        console.log("Calculating outputs...");
+        console.log("Inputs:", inputs);
+        console.log("Data:", data);
         const numInputs = inputs.map(Number);
         const sum = numInputs.reduce((a, b) => a + b, 0);
         if (sum !== 100) {
@@ -292,17 +297,48 @@
         setSelectedRNA(event.target.value);
     };
 
+    const toggleCSVView = () => {
+        setShowCSV(!showCSV);
+    };
+
     return (
-  <div className="container">
+        <div className="container">
             <div className="header">
                 <img src="images/KakaoTalk_20240701_172733808.png" alt="LBT Logo" className="logo" />
                 <h2>Nanoparticle Simulator</h2>
             </div>
-          <div className="file-upload">
+            <div className="file-upload">
                 <input type="file" id="csv-file" accept=".csv" onChange={handleFileUpload} />
                 <label htmlFor="csv-file">Upload CSV (Optional)</label>
                 <span className="file-name">{fileName}</span>
+                <button onClick={toggleCSVView} className="view-csv-btn">
+                    {showCSV ? 'Hide CSV' : 'View Default CSV'}
+                </button>
             </div>
+            {showCSV && (
+                <div className="csv-viewer">
+                    <h3>CSV Contents</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                {data[0] && Object.keys(data[0]).map((header, index) => (
+                                    <th key={index}>{header}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.slice(0, 10).map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    {Object.values(row).map((cell, cellIndex) => (
+                                        <td key={cellIndex}>{cell}</td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    {data.length > 10 && <p>Showing first 10 rows. Total rows: {data.length}</p>}
+                </div>
+            )}
             <div className="input-output-wrapper">
                 <div className="input-section">
                     <h3>Input Components</h3>
@@ -332,7 +368,6 @@
                             ))}
                         </select>
                     </div>
-      
                 </div>
                 <div className="output-section">
                     <h3>Output Features</h3>
@@ -341,7 +376,6 @@
                     <p>PDI: <span className="output-value">{outputs.pdi}</span></p>
                     {reference && <p className="reference">Reference: {reference}</p>}
                 </div>
-      
             </div>
             <div className="button-section">
                 <button onClick={calculateOutputs}>Calculate</button>
@@ -351,9 +385,9 @@
                 <p>Postal code: xxx-xxx, Contact: 82-2-xxxx-xxxx</p>
                 <p>Copyright 2024 LBT. All rights reserved. Design by xxx</p>
             </div>
-               </div>
-           );
-       };
+        </div>
+    );
+};
         ReactDOM.render(<NanoparticleSimulator />, document.getElementById('root'));
     </script>
 </body>
