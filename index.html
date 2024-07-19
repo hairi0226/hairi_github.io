@@ -348,6 +348,9 @@ const getRandomImage = () => {
                     <img src="https://hairi0226.github.io/hairi_github.io/images/thedabom_logo.png" alt="thedabom Logo" className="logo" />
                     <h2 className="title">EXO-AI<sup>™</sup></h2>
                 </div>
+                          <div className="instructions">
+    <p>To use this tool, enter the molar ratios for each lipid component. Ensure that the sum of all ratios equals 100%. This will allow you to predict the features of the nanoparticle formulation.</p>
+</div>
                 <div className="button-container">
                     <button className="header-button run-button" onClick={calculateOutputs}>RUN</button>
                     <button className="header-button database-button" onClick={toggleCSVView}>
@@ -380,9 +383,7 @@ const getRandomImage = () => {
                         {data.length > 10 && <p>Showing first 10 rows. Total rows: {data.length}</p>}
                     </div>
                 )}
-                <div className="instructions">
-    <p>To use this tool, enter the molar ratios for each lipid component. Ensure that the sum of all ratios equals 100%. This will allow you to predict the features of the nanoparticle formulation.</p>
-</div>
+
                 <div className="input-output-wrapper">
                     <div className="input-section">
                         <h3>Input Components</h3>
