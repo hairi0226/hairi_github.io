@@ -211,11 +211,11 @@
     <script type="text/babel">
     const NanoparticleSimulator = () => {
         const lipids = [
-            { name: 'DPPC', min: 0, max: 75 },
+            { name: 'DSSM', min: 0, max: 75 },
             { name: 'DSPE', min: 0, max: 10 },
             { name: 'Cholesterol', min: 0, max: 60 },
-            { name: 'MC3 (D-Lin-MC3-DMA)', min: 0, max: 55 },
-            { name: 'GD3 (Disialoganglioside)', min: 0, max: 10 }
+            { name: 'DSPS)', min: 0, max: 55 },
+            { name: 'DSPC', min: 0, max: 10 }
         ];
 
         const RNAOptions = [
@@ -291,8 +291,8 @@ const calculateOutputs = () => {
             row.DPPC == numInputs[0] &&
             row['DSPE-PEG2000'] == numInputs[1] &&
             row.Cholesterol == numInputs[2] &&
-            (row.MC3 == numInputs[3] || numInputs[3] === 0) &&
-            (row.GD3 == numInputs[4] || numInputs[4] === 0)
+            (row.DSPC == numInputs[3] || numInputs[3] === 0) &&
+            (row.DSPS == numInputs[4] || numInputs[4] === 0)
         );
     }
 
