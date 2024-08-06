@@ -10,14 +10,13 @@
             padding: 0;
             font-family: Arial, sans-serif;
             height: 100%;
-            overflow: hidden;
+            overflow-x: hidden;
         }
         .container {
-            background-image: url('https://hairi0226.github.io/hairi_github.io/images/background.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: #0a192f; /* Dark blue background color */
+            background-image: url('https://hairi0226.github.io/hairi_github.io/images/background.png'), linear-gradient(to bottom, #0a192f, #071426);
+            background-size: contain, cover;
+            background-position: center, center;
+            background-repeat: no-repeat, no-repeat;
             color: white;
             min-height: 100vh;
             display: flex;
@@ -69,6 +68,39 @@
             background-color: #f0f0f0;
             transform: translateY(-2px);
         }
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            background-color: rgba(0, 32, 96, 0.7);
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+        .tab-navigation li {
+            padding: 15px 30px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .tab-navigation li:hover,
+        .tab-navigation li.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .tab-content-container {
+            background-color: #f5f5f5;
+            padding: 40px 0;
+        }
+        .tab-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -80,13 +112,57 @@
             <nav>
                 <a href="#">About</a>
                 <a href="#">Notice</a>
-                <a href="#">🌐</a>
+                <a href="https://www.thedabom.com/">🌐</a>
             </nav>
         </header>
         <div class="content">
             <h1>Welcome to EXOAI</h1>
             <a href="https://hairi0226.github.io/hairi_github.io/mainpage.html" class="main-page-button">Go to EXOAI</a>
         </div>
+        <ul class="tab-navigation">
+            <li class="tab-item active" onclick="openTab(event, 'tab1')">Exosome-based therapeutics for localized diseases</li>
+            <li class="tab-item" onclick="openTab(event, 'tab2')">Development of exosome-based diagnostic platform</li>
+            <li class="tab-item" onclick="openTab(event, 'tab3')">Products</li>
+        </ul>
     </div>
+
+    <div class="tab-content-container">
+        <div id="tab1" class="tab-content active">
+            <h2>Exosome-based therapeutics for localized diseases</h2>
+            <p>Content for exosome-based therapeutics...</p>
+        </div>
+        <div id="tab2" class="tab-content">
+            <h2>Development of exosome-based diagnostic platform</h2>
+            <p>Content for diagnostic platform development...</p>
+        </div>
+        <div id="tab3" class="tab-content">
+            <h2>Products</h2>
+            <p>Information about our products...</p>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabContent, tabItems;
+            
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].className = tabContent[i].className.replace(" active", "");
+            }
+            
+            tabItems = document.getElementsByClassName("tab-item");
+            for (i = 0; i < tabItems.length; i++) {
+                tabItems[i].className = tabItems[i].className.replace(" active", "");
+            }
+            
+            document.getElementById(tabName).className += " active";
+            evt.currentTarget.className += " active";
+
+            // Scroll to the content
+            document.querySelector('.tab-content-container').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
