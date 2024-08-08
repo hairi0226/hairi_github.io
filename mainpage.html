@@ -203,7 +203,27 @@
             font-size: 0.9em;
             color: #7f8c8d;
         }
-    </style>
+              .background-image-container {
+            position: relative;
+            width: 100%;
+            height: 300px; /* Adjust as needed */
+            background-image: url('https://hairi0226.github.io/hairi_github.io/images/background_exosome.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .background-text {
+            color: white;
+            font-size: 4em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+      
+</style>
 </head>
 <body>
     <div id="root"></div>
@@ -346,11 +366,11 @@ const getRandomImage = () => {
             <div className="container">
                 <div className="header">
                     <img src="https://hairi0226.github.io/hairi_github.io/images/thedabom_symbol_white.png" alt="thedabom Logo" className="logo" />
-                    <h2 className="title">EXOAI<sup>™</sup></h2>
+                    {/* Removed the original EXOAI™ title */}
                 </div>
-                          <div className="instructions">
-    <p>To use this tool, enter the molar ratios for each lipid component. Ensure that the sum of all ratios equals 100%. This will allow you to predict the features of the nanoparticle formulation.</p>
-</div>
+                <div className="background-image-container">
+                    <div className="background-text">EXOAI</div>
+                </div>
                 <div className="button-container">
                     <button className="header-button run-button" onClick={calculateOutputs}>RUN</button>
                     <button className="header-button database-button" onClick={toggleCSVView}>
@@ -435,7 +455,7 @@ const getRandomImage = () => {
         </div>
     );
 };
-        ReactDOM.render(<NanoparticleSimulator />, document.getElementById('root'));
+    ReactDOM.render(<NanoparticleSimulator />, document.getElementById('root'));
     </script>
 </body>
 </html>
