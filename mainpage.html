@@ -227,6 +227,33 @@
             margin-bottom: 20px; /* Reduced from 30px */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
+              .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
       
 </style>
 </head>
@@ -259,11 +286,14 @@
         const [errors, setErrors] = React.useState(lipids.map(() => ''));
         const [data, setData] = React.useState([]);
         const [showCSV, setShowCSV] = React.useState(false);
-
+        const [isLoading, setIsLoading] = React.useState(false);
+      
+      
         React.useEffect(() => {
             loadDefaultCSV();
         }, []);
 
+      
         const loadDefaultCSV = () => {
             fetch('https://hairi0226.github.io/hairi_github.io/data/test_base.csv')
                 .then(response => {
@@ -300,50 +330,56 @@
         };
 
 const calculateOutputs = () => {
-    console.log("Calculating outputs...");
-    console.log("Inputs:", inputs);
-    console.log("Data:", data);
-    const numInputs = inputs.map(Number);
-    const sum = numInputs.reduce((a, b) => a + b, 0);
-    if (sum !== 100) {
-        alert('The sum of all components must equal 100');
-        return;
-    }
+        setIsLoading(true);
+        console.log("Calculating outputs...");
+        console.log("Inputs:", inputs);
+        console.log("Data:", data);
+        const numInputs = inputs.map(Number);
+        const sum = numInputs.reduce((a, b) => a + b, 0);
+        if (sum !== 100) {
+            alert('The sum of all components must equal 100');
+            setIsLoading(false);
+            return;
+        }
 
-    let matchingRow;
-    if (data.length > 0) {
-        matchingRow = data.find(row =>
-            row.DPPC == numInputs[0] &&
-            row['DSPE-PEG2000'] == numInputs[1] &&
-            row.Cholesterol == numInputs[2] &&
-            (row.DSPC == numInputs[3] || numInputs[3] === 0) &&
-            (row.DSPS == numInputs[4] || numInputs[4] === 0)
-        );
-    }
+        // Simulate a delay to show loading animation
+        setTimeout(() => {
+            let matchingRow;
+            if (data.length > 0) {
+                matchingRow = data.find(row =>
+                    row.DPPC == numInputs[0] &&
+                    row['DSPE-PEG2000'] == numInputs[1] &&
+                    row.Cholesterol == numInputs[2] &&
+                    (row.DSPC == numInputs[3] || numInputs[3] === 0) &&
+                    (row.DSPS == numInputs[4] || numInputs[4] === 0)
+                );
+            }
 
-    if (matchingRow) {
-        setOutputs({
-            particleSize: matchingRow['Particle Size'] || '0 (data not shown)',
-            zetaPotential: matchingRow['Zeta Potential'] || '0 (data not shown)',
-            pdi: matchingRow['PDI'] || '0 (data not shown)',
-            imageUrl: getRandomImage() // 设置图片 URL
-        });
-        setReference(matchingRow['Ref'] ? `<a href="${matchingRow['Ref']}" target="_blank">Link to Paper</a>` : 'Reference not available');
-    } else {
-        // Random prediction
-        const particleSize = Math.random() * (150 - 50) + 50;
-        const zetaPotential = Math.random() * 60 - 30;
-        const pdi = Math.random() * (0.3 - 0.05) + 0.05;
+            if (matchingRow) {
+                setOutputs({
+                    particleSize: matchingRow['Particle Size'] || '0 (data not shown)',
+                    zetaPotential: matchingRow['Zeta Potential'] || '0 (data not shown)',
+                    pdi: matchingRow['PDI'] || '0 (data not shown)',
+                    imageUrl: getRandomImage()
+                });
+                setReference(matchingRow['Ref'] ? `<a href="${matchingRow['Ref']}" target="_blank">Link to Paper</a>` : 'Reference not available');
+            } else {
+                // Random prediction
+                const particleSize = Math.random() * (150 - 50) + 50;
+                const zetaPotential = Math.random() * 60 - 30;
+                const pdi = Math.random() * (0.3 - 0.05) + 0.05;
 
-        setOutputs({
-            particleSize: `${particleSize.toFixed(2)}nm (Predicted)`,
-            zetaPotential: `${zetaPotential.toFixed(2)}mV (Predicted)`,
-            pdi: pdi.toFixed(4) + ' (Predicted)',
-            imageUrl: getRandomImage() // 设置图片 URL
-        });
-        setReference('Prediction - No matching data');
-    }
-};
+                setOutputs({
+                    particleSize: `${particleSize.toFixed(2)}nm (Predicted)`,
+                    zetaPotential: `${zetaPotential.toFixed(2)}mV (Predicted)`,
+                    pdi: pdi.toFixed(4) + ' (Predicted)',
+                    imageUrl: getRandomImage()
+                });
+                setReference('Prediction - No matching data');
+            }
+            setIsLoading(false);
+        }, 2000); // 2 seconds delay
+    };
       
 const getRandomImage = () => {
     const images = [
@@ -366,6 +402,7 @@ const getRandomImage = () => {
             }
             setShowCSV(!showCSV);
         };
+      
 
         return (
             <div className="container">
@@ -376,12 +413,21 @@ const getRandomImage = () => {
                 <div className="background-image-container">
                     <div className="background-text">EXOAI</div>
                 </div>
-                <div className="button-container">
-                    <button className="header-button run-button" onClick={calculateOutputs}>RUN</button>
-                    <button className="header-button database-button" onClick={toggleCSVView}>
-                        {showCSV ? 'Hide Database' : 'View Database'}
-                    </button>
+            <div className="button-container">
+                <button className="header-button run-button" onClick={calculateOutputs} disabled={isLoading}>
+                    {isLoading ? 'Calculating...' : 'RUN'}
+                </button>
+                <button className="header-button database-button" onClick={toggleCSVView}>
+                    {showCSV ? 'Hide Database' : 'View Database'}
+                </button>
+            </div>
+      
+                  {isLoading && (
+                <div className="loading-overlay">
+                    <div className="loading-spinner"></div>
+                    <p>Calculating results...</p>
                 </div>
+            )}
                 
       
                 {showCSV && (
@@ -455,7 +501,7 @@ const getRandomImage = () => {
                 <div className="footer">
                     <p>Yonsei University 50, Yonsei-ro, Seodaemun-gu, Seoul, Korea</p>
                 <p>Postal code: xxx-xxx, Contact: 82-2-xxxx-xxxx</p>
-                <p>Copyright 2024 LBT. All rights reserved. Design by xxx</p>
+                <p>Copyright 2024 LBT. All rights reserved. Design by hairi</p>
             </div>
         </div>
     );
