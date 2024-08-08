@@ -20,7 +20,7 @@
             max-width: 1000px;
             margin: 0 auto;
             background-color: white;
-            padding: 40px;
+            padding: 0 40px 40px; /* Reduced top padding */
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
@@ -28,12 +28,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+
+            padding: 10px 0; /* Added padding */
         }
         .logo {
             width: 150px;
             height: auto;
+            z-index: 2; /* Ensure logo is above background */
         }
+      
         .title {
             flex-grow: 1;
             text-align: center;
@@ -206,20 +209,22 @@
               .background-image-container {
             position: relative;
             width: 100%;
-            height: 300px; /* Adjust as needed */
+            height: 250px; /* Reduced from 300px */
             background-image: url('https://hairi0226.github.io/hairi_github.io/images/background_exosome.png');
             background-size: cover;
-            background-position: center;
+            background-position: center top; /* Changed to top */
             display: flex;
             justify-content: center;
             align-items: flex-end;
             margin-bottom: 20px;
+            margin-top: -10px; /* Negative margin to overlap with header */
+            padding-top: 50px; /* Add padding to compensate for negative margin */
         }
 
         .background-text {
             color: white;
             font-size: 4em;
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* Reduced from 30px */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
       
@@ -365,7 +370,7 @@ const getRandomImage = () => {
         return (
             <div className="container">
                 <div className="header">
-                    <img src="https://hairi0226.github.io/hairi_github.io/images/thedabom_symbol_white.png" alt="thedabom Logo" className="logo" />
+                    <img src="https://hairi0226.github.io/hairi_github.io/images/thedabom_symbol_white_removed_background.png" alt="thedabom Logo" className="logo" />
                     {/* Removed the original EXOAI™ title */}
                 </div>
                 <div className="background-image-container">
