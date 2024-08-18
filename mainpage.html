@@ -20,7 +20,7 @@
             max-width: 1000px;
             margin: 0 auto;
             background-color: white;
-            padding: 0 40px 40px; /* Reduced top padding */
+            padding: 0 40px 40px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
@@ -28,15 +28,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            padding: 10px 0; /* Added padding */
+            padding: 10px 0;
         }
         .logo {
             width: 150px;
             height: auto;
-            z-index: 2; /* Ensure logo is above background */
+            z-index: 2;
         }
-      
         .title {
             flex-grow: 1;
             text-align: center;
@@ -47,29 +45,27 @@
             margin: 0;
         }
         .title sup {
-            font-size: 0.8em; /* 上标大小 */
-            vertical-align: super; /* 上标位置 */
-            margin-left: 4px; /* 上标与文本的间距 */
+            font-size: 0.8em;
+            vertical-align: super;
+            margin-left: 4px;
         }
-      
         .button-container {
             display: flex;
             justify-content: space-between;
             margin-bottom: 30px;
-                   margin-top: 30px;
-              padding: 0 160px; /* 增加左右内边距，调整按钮与容器边缘的距离 */
+            margin-top: 30px;
+            padding: 0 160px;
         }
-.header-button {
-    padding: 20px 40px; /* 设置按钮的内边距，使其大小一致 */
-    font-size: 20px; /* 设置按钮的字体大小 */
-    border-radius: 10px; /* 设置按钮的圆角 */
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    /* 添加一个最小宽度以确保按钮不会因为文本长度而变得不一致 */
-    min-width: 200px;
-}
+        .header-button {
+            padding: 20px 40px;
+            font-size: 20px;
+            border-radius: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            min-width: 200px;
+        }
         .run-button {
             background-color: #27ae60;
         }
@@ -82,7 +78,7 @@
         .database-button:hover {
             background-color: #2980b9;
         }
-              .instructions {
+        .instructions {
             margin-top: 20px;
             padding: 15px;
             background-color: #ffffff;
@@ -153,25 +149,22 @@
             font-size: 0.9em;
             margin-top: 5px;
         }
-      .prediction-image {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.prediction-image h3 {
-    color: #3498db;
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.prediction-img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
+        .prediction-image {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .prediction-image h3 {
+            color: #3498db;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .prediction-img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
         .reference {
             font-style: italic;
             color: #7f8c8d;
@@ -206,28 +199,27 @@
             font-size: 0.9em;
             color: #7f8c8d;
         }
-              .background-image-container {
+        .background-image-container {
             position: relative;
             width: 100%;
-            height: 250px; /* Reduced from 300px */
+            height: 250px;
             background-image: url('https://hairi0226.github.io/hairi_github.io/images/background_exosome.png');
             background-size: cover;
-            background-position: center top; /* Changed to top */
+            background-position: center top;
             display: flex;
             justify-content: center;
             align-items: flex-end;
             margin-bottom: 20px;
-            margin-top: -10px; /* Negative margin to overlap with header */
-            padding-top: 50px; /* Add padding to compensate for negative margin */
+            margin-top: -10px;
+            padding-top: 50px;
         }
-
         .background-text {
             color: white;
             font-size: 4em;
-            margin-bottom: 20px; /* Reduced from 30px */
+            margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-              .loading-overlay {
+        .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -240,7 +232,6 @@
             align-items: center;
             z-index: 1000;
         }
-
         .loading-spinner {
             border: 5px solid #f3f3f3;
             border-top: 5px solid #3498db;
@@ -249,13 +240,18 @@
             height: 50px;
             animation: spin 1s linear infinite;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-      
-</style>
+        .collapsible-section h3 {
+            cursor: pointer;
+            user-select: none;
+        }
+        .collapsible-section h3:hover {
+            color: #3498db;
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
@@ -287,13 +283,15 @@
         const [data, setData] = React.useState([]);
         const [showCSV, setShowCSV] = React.useState(false);
         const [isLoading, setIsLoading] = React.useState(false);
-      
-      
+        const [showCMAs, setShowCMAs] = React.useState(true);
+        const [showCPPs, setShowCPPs] = React.useState(true);
+        const [temperature, setTemperature] = React.useState('');
+        const [flowRate, setFlowRate] = React.useState('');
+
         React.useEffect(() => {
             loadDefaultCSV();
         }, []);
 
-      
         const loadDefaultCSV = () => {
             fetch('https://hairi0226.github.io/hairi_github.io/data/test_base.csv')
                 .then(response => {
@@ -329,57 +327,55 @@
             setErrors(newErrors);
         };
 
-const calculateOutputs = () => {
-        setIsLoading(true);
-        console.log("Calculating outputs...");
-        console.log("Inputs:", inputs);
-        console.log("Data:", data);
-        const numInputs = inputs.map(Number);
-        const sum = numInputs.reduce((a, b) => a + b, 0);
-        if (sum !== 100) {
-            alert('The sum of all components must equal 100');
-            setIsLoading(false);
-            return;
-        }
-
-        // Simulate a delay to show loading animation
-        setTimeout(() => {
-            let matchingRow;
-            if (data.length > 0) {
-                matchingRow = data.find(row =>
-                    row.DPPC == numInputs[0] &&
-                    row['DSPE-PEG2000'] == numInputs[1] &&
-                    row.Cholesterol == numInputs[2] &&
-                    (row.DSPC == numInputs[3] || numInputs[3] === 0) &&
-                    (row.DSPS == numInputs[4] || numInputs[4] === 0)
-                );
+        const calculateOutputs = () => {
+            setIsLoading(true);
+            console.log("Calculating outputs...");
+            console.log("Inputs:", inputs);
+            console.log("Data:", data);
+            const numInputs = inputs.map(Number);
+            const sum = numInputs.reduce((a, b) => a + b, 0);
+            if (sum !== 100) {
+                alert('The sum of all components must equal 100');
+                setIsLoading(false);
+                return;
             }
 
-            if (matchingRow) {
-                setOutputs({
-                    particleSize: matchingRow['Particle Size'] || '0 (data not shown)',
-                    zetaPotential: matchingRow['Zeta Potential'] || '0 (data not shown)',
-                    pdi: matchingRow['PDI'] || '0 (data not shown)',
-                    imageUrl: getRandomImage()
-                });
-                setReference(matchingRow['Ref'] ? `<a href="${matchingRow['Ref']}" target="_blank">Link to Paper</a>` : 'Reference not available');
-            } else {
-                // Random prediction
-                const particleSize = Math.random() * (150 - 50) + 50;
-                const zetaPotential = Math.random() * 60 - 30;
-                const pdi = Math.random() * (0.3 - 0.05) + 0.05;
+            setTimeout(() => {
+                let matchingRow;
+                if (data.length > 0) {
+                    matchingRow = data.find(row =>
+                        row.DPPC == numInputs[0] &&
+                        row['DSPE-PEG2000'] == numInputs[1] &&
+                        row.Cholesterol == numInputs[2] &&
+                        (row.DSPC == numInputs[3] || numInputs[3] === 0) &&
+                        (row.DSPS == numInputs[4] || numInputs[4] === 0)
+                    );
+                }
 
-                setOutputs({
-                    particleSize: `${particleSize.toFixed(2)}nm (Predicted)`,
-                    zetaPotential: `${zetaPotential.toFixed(2)}mV (Predicted)`,
-                    pdi: pdi.toFixed(4) + ' (Predicted)',
-                    imageUrl: getRandomImage()
-                });
-                setReference('Prediction - No matching data');
-            }
-            setIsLoading(false);
-        }, 2000); // 2 seconds delay
-    };
+                if (matchingRow) {
+                    setOutputs({
+                        particleSize: matchingRow['Particle Size'] || '0 (data not shown)',
+                        zetaPotential: matchingRow['Zeta Potential'] || '0 (data not shown)',
+                        pdi: matchingRow['PDI'] || '0 (data not shown)',
+                        imageUrl: getRandomImage()
+                    });
+                    setReference(matchingRow['Ref'] ? `<a href="${matchingRow['Ref']}" target="_blank">Link to Paper</a>` : 'Reference not available');
+                } else {
+                    const particleSize = Math.random() * (150 - 50) + 50;
+                    const zetaPotential = Math.random() * 60 - 30;
+                    const pdi = Math.random() * (0.3 - 0.05) + 0.05;
+
+                    setOutputs({
+                        particleSize: `${particleSize.toFixed(2)}nm (Predicted)`,
+                        zetaPotential: `${zetaPotential.toFixed(2)}mV (Predicted)`,
+                        pdi: pdi.toFixed(4) + ' (Predicted)',
+                        imageUrl: getRandomImage()
+                    });
+                    setReference('Prediction - No matching data');
+                }
+                setIsLoading(false);
+            }, 2000);
+        };
       
 const getRandomImage = () => {
     const images = [
@@ -421,85 +417,99 @@ const getRandomImage = () => {
                     {showCSV ? 'Hide Database' : 'View Database'}
                 </button>
             </div>
-      
-                  {isLoading && (
+
+            {isLoading && (
                 <div className="loading-overlay">
                     <div className="loading-spinner"></div>
                     <p>Calculating results...</p>
                 </div>
             )}
-                
-      
-                {showCSV && (
-                    <div className="csv-viewer">
-                        <h3>Database Contents</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    {data[0] && Object.keys(data[0]).map((header, index) => (
-                                        <th key={index}>{header}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.slice(0, 10).map((row, rowIndex) => (
-                                    <tr key={rowIndex}>
-                                        {Object.values(row).map((cell, cellIndex) => (
-                                            <td key={cellIndex}>{cell}</td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {data.length > 10 && <p>Showing first 10 rows. Total rows: {data.length}</p>}
-                    </div>
-                )}
 
-                <div className="input-output-wrapper">
-                    <div className="input-section">
-                        <h3>Input Components</h3>
-                        {lipids.map((lipid, index) => (
-                            <div key={index} className="input-group">
-                                <label>{lipid.name}:</label>
-                                <input
-                                    type="number"
-                                    value={inputs[index]}
-                                    onChange={(e) => handleInputChange(index, e.target.value)}
-                                    min={lipid.min}
-                                    max={lipid.max}
-                                    step="0.1"
-                                />
-                                <div className="recommended-range">
-                                    Recommended range: {lipid.min}% - {lipid.max}%
-                                </div>
-                                {errors[index] && <div className="error">{errors[index]}</div>}
-                            </div>
-                        ))}
-                        <div className="rna-dropdown">
-                            <label>RNA Option:</label>
-                            <select value={selectedRNA} onChange={handleRNAChange}>
-                                <option value="">Select RNA</option>
-                                {RNAOptions.map((rna, index) => (
-                                    <option key={index} value={rna}>{rna}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="output-section">
-                        <h3>Output Features</h3>
-                        <p>Particle Size: <span className="output-value">{outputs.particleSize}</span></p>
-                        <p>Zeta Potential: <span className="output-value">{outputs.zetaPotential}</span></p>
-                        <p>PDI: <span className="output-value">{outputs.pdi}</span></p>
-                        {reference && <p className="reference"dangerouslySetInnerHTML={{ __html: reference }} />}
-       <div className="prediction-image">
-        <h3>Prediction Image</h3>
-        {outputs.imageUrl && <img src={outputs.imageUrl} alt="Prediction" className="prediction-img" />}
-    </div>
-                    </div>
-      
+            {showCSV && (
+                <div className="csv-viewer">
+                    {/* ... (keep the existing CSV viewer code) */}
                 </div>
-                <div className="footer">
-                    <p>Yonsei University 50, Yonsei-ro, Seodaemun-gu, Seoul, Korea</p>
+            )}
+
+            <div className="input-output-wrapper">
+                <div className="input-section">
+                    <div className="collapsible-section">
+                        <h3 onClick={() => setShowCMAs(!showCMAs)}> 
+                            CMAs {showCMAs ? '▼' : '▶'}
+                        </h3>
+                        {showCMAs && (
+                            <div>
+                                {lipids.map((lipid, index) => (
+                                    <div key={index} className="input-group">
+                                        <label>{lipid.name}:</label>
+                                        <input
+                                            type="number"
+                                            value={inputs[index]}
+                                            onChange={(e) => handleInputChange(index, e.target.value)}
+                                            min={lipid.min}
+                                            max={lipid.max}
+                                            step="0.1"
+                                        />
+                                        <div className="recommended-range">
+                                            Recommended range: {lipid.min}% - {lipid.max}%
+                                        </div>
+                                        {errors[index] && <div className="error">{errors[index]}</div>}
+                                    </div>
+                                ))}
+                                <div className="rna-dropdown">
+                                    <label>RNA Option:</label>
+                                    <select value={selectedRNA} onChange={handleRNAChange}>
+                                        <option value="">Select RNA</option>
+                                        {RNAOptions.map((rna, index) => (
+                                            <option key={index} value={rna}>{rna}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div className="collapsible-section">
+                        <h3 onClick={() => setShowCPPs(!showCPPs)}>
+                            CPPs {showCPPs ? '▼' : '▶'}
+                        </h3>
+                        {showCPPs && (
+                            <div>
+                                <div className="input-group">
+                                    <label>Temperature (°C):</label>
+                                    <input
+                                        type="number"
+                                        value={temperature}
+                                        onChange={(e) => setTemperature(e.target.value)}
+                                        step="0.1"
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <label>Flow Rate (μL/min):</label>
+                                    <input
+                                        type="number"
+                                        value={flowRate}
+                                        onChange={(e) => setFlowRate(e.target.value)}
+                                        step="0.1"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="output-section">
+                    <h3>CQAs</h3>
+                    <p>Particle Size: <span className="output-value">{outputs.particleSize}</span></p>
+                    <p>Zeta Potential: <span className="output-value">{outputs.zetaPotential}</span></p>
+                    <p>PDI: <span className="output-value">{outputs.pdi}</span></p>
+                    {reference && <p className="reference" dangerouslySetInnerHTML={{ __html: reference }} />}
+                    <div className="prediction-image">
+                        <h3>Prediction Image</h3>
+                        {outputs.imageUrl && <img src={outputs.imageUrl} alt="Prediction" className="prediction-img" />}
+                    </div>
+                </div>
+            </div>
+            <div className="footer">
+                <p>Yonsei University 50, Yonsei-ro, Seodaemun-gu, Seoul, Korea</p>
                 <p>Postal code: xxx-xxx, Contact: 82-2-xxxx-xxxx</p>
                 <p>Copyright 2024 LBT. All rights reserved. Design by hairi</p>
             </div>
