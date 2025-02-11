@@ -14,14 +14,13 @@
           {
             "class_name": "InputLayer",
             "config": {
-              "batch_shape": [null, 5],
-              "inputShape": [5],
+              "batch_input_shape": [null, 5],
               "dtype": "float32",
               "sparse": false,
               "name": "input_layer_3"
             },
             "name": "input_layer_3",
-            "inbound_nodes": [[["input_layer_3", 0, 0, {}]]]
+            "inbound_nodes": []
           },
           {
             "class_name": "Dense",
@@ -57,14 +56,7 @@
             "name": "dense_6",
             "inbound_nodes": [
               [
-                {
-                  "class_name": "__keras_tensor__",
-                  "config": {
-                    "shape": [null, 5],
-                    "dtype": "float32",
-                    "keras_history": ["input_layer_3", 0, 0]
-                  }
-                }
+                ["input_layer_3", 0, 0, {}]
               ]
             ]
           },
@@ -102,20 +94,13 @@
             "name": "dense_7",
             "inbound_nodes": [
               [
-                {
-                  "class_name": "__keras_tensor__",
-                  "config": {
-                    "shape": [null, 10],
-                    "dtype": "float32",
-                    "keras_history": ["dense_6", 0, 0]
-                  }
-                }
+                ["dense_6", 0, 0, {}]
               ]
             ]
           }
         ],
         "input_layers": [
-          ["input_layer_3", 0, 0, {"batch_input_shape": [null, 5]}]
+          ["input_layer_3", 0, 0]
         ],
         "output_layers": [["dense_7", 0, 0]],
         "input_shapes": [[null, 5]],
